@@ -10,9 +10,25 @@ from fifa_kg.data_loader import load_player_stats, load_world_cup_summary
 from fifa_kg.graph_builder import build_knowledge_graph
 
 
+def find_dataset_file(name: str) -> Path:
+    candidates = [
+        ROOT / 'dataset' / 'FIFA dataset' / name,
+        ROOT / 'FIFA dataset' / name,
+        ROOT / 'dataset' / 'FIFA2022Playerstatistics' / name,
+        ROOT / 'FIFA2022Playerstatistics' / name,
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    raise FileNotFoundError(f'Could not find dataset file: {name}')
+
+
 def main():
-    summary = load_world_cup_summary(ROOT / 'FIFA dataset' / 'FIFA - World Cup Summary.csv')
-    stats = load_player_stats(ROOT / 'FIFA2022Playerstatistics' / 'FIFA WC 2022 Players Stats.csv')
+    summary_path = find_dataset_file('FIFA - World Cup Summary.csv')
+    stats_path = find_dataset_file('FIFA WC 2022 Players Stats.csv')
+
+    summary = load_world_cup_summary(summary_path)
+    stats = load_player_stats(stats_path)
     graph = build_knowledge_graph(summary, stats)
 
     ttl_path = ROOT / 'fifa_kg.ttl'
