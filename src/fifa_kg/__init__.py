@@ -1,0 +1,1 @@
+"""FIFA knowledge graph package."""

@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+*.ttl
+output/
+.DS_Store
+dataset
+run.sh
